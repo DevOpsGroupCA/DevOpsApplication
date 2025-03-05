@@ -10,35 +10,27 @@ workflows:
               only:
                 - main
       - deploy:
+          requires:
+            - build
           filters:
             branches:
               only:
                 - main
-          requires:
-            - build
 
 jobs:
   build:
     working_directory: ~/DevOpsApplication
     docker:
-      - image: circleci/node:20.17.0
+      - image: cimg/node:20.17.0  # Use cimg/node for a leaner, maintained image
     steps:
+      - checkout  # Pull code first
       - run:
-        name: Upgrade Node.js to v20
-        command: |
-          sudo apt-get update
-          sudo apt-get install -y curl
-          curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-          sudo apt-get install -y nodejs
-          node -v
-        - checkout
-        - run:
-          name: update-npm
-          command: 'sudo npm install -g npm@latest'
+          name: Update npm
+          command: sudo npm install -g npm@latest && npm -v  # Update npm and verify
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
-          name: install-npm-wee
+          name: Install Dependencies
           command: npm install
       - save_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
@@ -47,9 +39,9 @@ jobs:
 
   deploy:
     docker:
-      - image: circleci/node:20.17.0
+      - image: cimg/node:20.17.0
     steps:
       - run:
-          name: Deploy-Application
+          name: Deploy Application
           command: |
-            ssh -o StrictHostKeyChecking=no ubuntu@$EC2_PUBLIC_DNS "rm -rf DevOpsApplication/git clone https://devopsgroupca.github.io/DevOpsApplication/; source DevOpsApplication/deploy.sh"
+            ssh -o StrictHostKeyChecking=no ubuntu@$EC2_PUBLIC_DNS "rm -rf DevOpsApplication; git clone https://github.com/devopsgroupca/DevOpsApplication.git; source DevOpsApplication/deploy.sh"
