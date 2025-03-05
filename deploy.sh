@@ -4,7 +4,7 @@ sudo npm install -g pm2
 
 pm2 stop example_app
 
-cd DevOpsApplication
+cd ExampleApplication/
 
 npm install
 
