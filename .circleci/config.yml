@@ -2,7 +2,7 @@ version: 2.1
 
 workflows:
   version: 2
-  build:
+  build-and-deploy:
     jobs:
       - build:
           filters:
@@ -10,27 +10,27 @@ workflows:
               only:
                 - main
       - deploy:
+          requires:
+            - build
           filters:
             branches:
               only:
                 - main
-          requires:
-            - build
 
 jobs:
   build:
-    working_directory: ~/DevOpsApplication
+    working_directory: ~/ExampleApplication
     docker:
-      - image: cimg/node:20.17.0
+      - image: circleci/node:16
     steps:
       - checkout
       - run:
-          name: update-npm
-          command: 'sudo npm install -g npm@latest'
+          name: Update npm
+          command: npm install -g npm@latest
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
-          name: install-npm-wee
+          name: Install dependencies
           command: npm install
       - save_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
@@ -39,17 +39,15 @@ jobs:
 
   deploy:
     docker:
-      - image: cimg/node:20.17.0
+      - image: circleci/node:16
     steps:
       - run:
-          name: deploy-application
-          steps:
-  - run:
-      name: deploy-application
-      command: ssh -o StrictHostKeyChecking=no ubuntu@$EC2_PUBLIC_DNS "
-        rm -rf DevOpsApplication &&
-        git clone https://github.com/DevOpsGroupCA/DevOpsApplication.git &&
-        cd DevOpsApplication &&
-        chmod +x deploy.sh &&
-        ./deploy.sh
-      "
+          name: Deploy application
+          command: |
+            ssh -o StrictHostKeyChecking=no ubuntu@$EC2_PUBLIC_DNS "
+              rm -rf DevOpsApplication &&
+              git clone https://github.com/DevOpsGroupCA/DevOpsApplication.git &&
+              cd DevOpsApplication &&
+              chmod +x deploy.sh &&
+              ./deploy.sh
+            "
