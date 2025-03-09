@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/DevOpsGroupCA/DevOpsApplication/crud-todos/static/css/main.d5f97150.css",
+    "main.js": "/DevOpsGroupCA/DevOpsApplication/crud-todos/static/js/main.c326c0ec.js",
+    "static/js/453.b1137085.chunk.js": "/DevOpsGroupCA/DevOpsApplication/crud-todos/static/js/453.b1137085.chunk.js",
+    "index.html": "/DevOpsGroupCA/DevOpsApplication/crud-todos/index.html",
+    "main.d5f97150.css.map": "/DevOpsGroupCA/DevOpsApplication/crud-todos/static/css/main.d5f97150.css.map",
+    "main.c326c0ec.js.map": "/DevOpsGroupCA/DevOpsApplication/crud-todos/static/js/main.c326c0ec.js.map",
+    "453.b1137085.chunk.js.map": "/DevOpsGroupCA/DevOpsApplication/crud-todos/static/js/453.b1137085.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d5f97150.css",
+    "static/js/main.c326c0ec.js"
+  ]
+}
