@@ -63,7 +63,7 @@ function TodosList() {
 
     // Fetch todos from API
     const getTodos = async () => {
-        const { data } = await axios.get("http://localhost:8080");
+        const { data } = await axios.get("https://github.com/DevOpsGroupCA/DevOpsApplication/blob/main/crud-todos-backend/app.js:8080");
         const formattedData = data.todos.map((todo) => ({
             text: todo.task,
             id: todo.id,
